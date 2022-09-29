@@ -20,7 +20,7 @@ const Homepage = () => {
         fetch(POPULAR_API).then(res=>res.json()).then(data=>{
             setPopular(data.results)
         })
-        
+
         fetch(BEST_API).then(res=>res.json()).then(data=>{
             setBest(data.results)
         })
@@ -28,7 +28,7 @@ const Homepage = () => {
         fetch(UPCOMING_API).then(res=>res.json()).then(data=>{
             setUpcoming(data.results)
         })
-    })
+    }, [])
     
 
 
@@ -45,31 +45,45 @@ const Homepage = () => {
     }
 
     return ( 
-        <div>
+        <div className='homepage'>
             <header>
                 <form onSubmit={handleOnSubmit}>
                     <input type='search' placeholder='Search...' value={search} onChange={(e)=>setSearch(e.target.value)}/>
                 </form>
             </header>
 
-            {movies && movies.map(movie=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
-
-            <h1>Popular</h1>
-            {popular.length > 0 && popular.map((movie)=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
-
-            <h1>Best</h1>
-            {best.length > 0 && best.map((movie)=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
-        
-            <h1>Upcoming</h1>
-            {upcoming.length > 0 && upcoming.map((movie)=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
+            <div className='results'>
+                {movies && movies.map(movie=>{
+                    return <MovieCard key={movie.id} {...movie}/>
+                })}
+            </div>
+            
+            <div className='category'>
+                <h1>Popular</h1>
+                <div className='movieRow'>
+                    {popular.length > 0 && popular.map((movie)=>{
+                        return <MovieCard key={movie.id} {...movie}/>
+                    })}
+                </div>
+            </div>
+            
+            <div className='category'>
+                <h1>Best</h1>
+                <div className='movieRow'>
+                    {best.length > 0 && best.map((movie)=>{
+                        return <MovieCard key={movie.id} {...movie}/>
+                    })}
+                </div>
+            </div>
+                
+            <div className='category'>  
+                <h1>Upcoming</h1>
+                <div className='movieRow'>
+                    {upcoming.length > 0 && upcoming.map((movie)=>{
+                        return <MovieCard key={movie.id} {...movie}/>
+                    })}
+                </div>
+            </div>
         </div>
      );
 }

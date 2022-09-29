@@ -27,19 +27,27 @@ const MovieDetails = () => {
 
     return ( 
         <div className='MovieDetails'>
-            <h1>{movieDetails.title}</h1>
-            <img src={IMG_URL + movieDetails.poster_path} alt={movieDetails.title}/>
-            <h4>{movieDetails.overview}</h4>
-            <p>Release date: {movieDetails.release_date}</p>
-            <p>Rating: {movieDetails.vote_avarage}</p>
-            <p>Number of votes: {movieDetails.vote_count}</p>
-            {/*<p>Genres: {movieDetails.genres.map((genre)=>{
-                return <p>{genre.name}</p>
-            })}</p>*/}
-            <h2>Similar movies:</h2>
-            {similar.map((movie)=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
+            <div>
+                <img src={IMG_URL + movieDetails.poster_path} alt={movieDetails.title}/>
+            </div>
+            <div>
+                <h1>{movieDetails.title}</h1>
+                <h4>{movieDetails.overview}</h4>
+                <p>Release date: {movieDetails.release_date}</p>
+                <p>Rating: {movieDetails.vote_avarage}</p>
+                <p>Number of votes: {movieDetails.vote_count}</p>
+                {/*<p>Genres: {movieDetails.genres.map((genre)=>{
+                    return <p>{genre.name}</p>
+                })}</p>*/}
+            </div>
+            <div className='category'>
+                <h2>Similar movies:</h2>
+                <div className='movieRow'>
+                    {similar.map((movie)=>{
+                        return <MovieCard key={movie.id} {...movie}/>
+                    })}
+                </div>
+            </div>
 
         </div>
      );
