@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MovieCard from "./MovieCard";
 import useFetch from "../useFetch";
 
@@ -10,28 +10,14 @@ const Homepage = () => {
     const UPCOMING_API = `${URL}movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
     const SEARCH_API = `${URL}search/movie?api_key=${API_KEY}&query=`
 
-    const [popular, setPopular] = useState([]);
-    const [best, setBest] = useState([]);
-    const [upcoming, setUpcoming] = useState([]);
     const [search, setSearch] = useState('');
-    const [movies, setMovies] = useState([])
+    const [movies, setMovies] = useState([]);
 
-    useEffect(() => {
-        fetch(POPULAR_API).then(res=>res.json()).then(data=>{
-            setPopular(data.results)
-        })
-
-        fetch(BEST_API).then(res=>res.json()).then(data=>{
-            setBest(data.results)
-        })
-        
-        fetch(UPCOMING_API).then(res=>res.json()).then(data=>{
-            setUpcoming(data.results)
-        })
-    }, [])
+    const { error: popularErr, loading: popularLoad, data: popular} = useFetch(POPULAR_API);
+    const { error: bestErr, loading: bestLoad, data: best} = useFetch(BEST_API);
+    const { error: upcomingErr, loading: upcomingLoad, data: upcoming} = useFetch(UPCOMING_API);
+    const { error: searchErr, loading: searchLoading, data: searchResult, refetch} = useFetch(SEARCH_API);
     
-
-
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
@@ -39,7 +25,6 @@ const Homepage = () => {
             fetch(SEARCH_API + search).then((res)=> res.json()).then((data)=>{
                 setMovies(data.results)
             });
-
             setSearch('')
         }
     }
@@ -57,33 +42,40 @@ const Homepage = () => {
                     return <MovieCard key={movie.id} {...movie}/>
                 })}
             </div>
+
+            {(popularErr || bestErr || upcomingErr) && <div>{popularErr || bestErr || upcomingErr}</div>}
+            {(popularLoad || bestLoad || upcomingLoad) && <div>Loading...</div>}
             
+            {popular && 
             <div className='category'>
                 <h1>Popular</h1>
                 <div className='movieRow'>
-                    {popular.length > 0 && popular.map((movie)=>{
+                    {popular.results.length > 0 && popular.results.map((movie)=>{
                         return <MovieCard key={movie.id} {...movie}/>
                     })}
                 </div>
-            </div>
-            
+            </div>}
+
+            {best && 
             <div className='category'>
                 <h1>Best</h1>
                 <div className='movieRow'>
-                    {best.length > 0 && best.map((movie)=>{
+                    {best.results.length > 0 && best.results.map((movie)=>{
                         return <MovieCard key={movie.id} {...movie}/>
                     })}
                 </div>
-            </div>
-                
-            <div className='category'>  
+            </div>}
+
+            {upcoming && 
+            <div className='category'>
                 <h1>Upcoming</h1>
                 <div className='movieRow'>
-                    {upcoming.length > 0 && upcoming.map((movie)=>{
+                    {upcoming.results.length > 0 && upcoming.results.map((movie)=>{
                         return <MovieCard key={movie.id} {...movie}/>
                     })}
                 </div>
-            </div>
+            </div>}
+
         </div>
      );
 }

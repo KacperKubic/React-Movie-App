@@ -6,22 +6,41 @@ const useFetch = (API_REQUEST) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        setTimeout(() => {
+            fetch(API_REQUEST).then(res => {
+                if(!res.ok){
+                    throw Error('Could not fetch the data from that URL');
+                }
+                return res.json();
+            }).then(data => {
+                setLoading(false);
+                setData(data);
+                setError(null);
+            }).catch(err => {
+                setLoading(false);
+                setError(err.message);
+            })
+        }, 1500)
+    }, [API_REQUEST])
+
+    const refetch = () => {
         fetch(API_REQUEST).then(res => {
             if(!res.ok){
-                throw Error('Cannot fetch the data from that resource try again later')
+                throw Error('Could not fetch the data from that URL');
             }
             return res.json();
         }).then(data => {
-            setLoading(false)
+            setLoading(false);
             setData(data);
-            setError(null)
+            setError(null);
         }).catch(err => {
-            setLoading(false)
-            setError(err.message)
+            setLoading(false);
+            setError(err.message);
         })
-    }, [API_REQUEST])
+    }
 
-    return {data, loading, error}
+    return { data, loading, error, refetch };
 }
 
 export default useFetch;
+    

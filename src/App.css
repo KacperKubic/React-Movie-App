@@ -53,9 +53,10 @@ body{
     flex-wrap: wrap;
 }
 
-.movieDetails{
+.MovieDetails{
     height: 100vh;
     width: auto;
+    color: white;
 }
 
 
