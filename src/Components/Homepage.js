@@ -3,6 +3,7 @@ import MovieCard from "./MovieCard";
 import useFetch from "../useFetch";
 
 const Homepage = () => {
+    //Variables with all the API URLs
     const API_KEY = "77e9dd12a2574e4691f61cfcc29054d7"
     const URL = "https://api.themoviedb.org/3/"
     const POPULAR_API = `${URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
@@ -10,17 +11,18 @@ const Homepage = () => {
     const UPCOMING_API = `${URL}movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
     const SEARCH_API = `${URL}search/movie?api_key=${API_KEY}&query=`
 
+    //States
     const [search, setSearch] = useState('');
     const [movies, setMovies] = useState([]);
 
+    //Variables that take the data from my custom hook "useFetch"
     const { error: popularErr, loading: popularLoad, data: popular} = useFetch(POPULAR_API);
     const { error: bestErr, loading: bestLoad, data: best} = useFetch(BEST_API);
     const { error: upcomingErr, loading: upcomingLoad, data: upcoming} = useFetch(UPCOMING_API);
-    const { error: searchErr, loading: searchLoading, data: searchResult, refetch} = useFetch(SEARCH_API);
     
+    //Fetching the data from the API when form is submited
     const handleOnSubmit = (e) => {
         e.preventDefault();
-
         if(search) {
             fetch(SEARCH_API + search).then((res)=> res.json()).then((data)=>{
                 setMovies(data.results)
@@ -36,13 +38,14 @@ const Homepage = () => {
                     <input type='search' placeholder='Search...' value={search} onChange={(e)=>setSearch(e.target.value)}/>
                 </form>
             </header>
-
+            
             <div className='results'>
                 {movies && movies.map(movie=>{
                     return <MovieCard key={movie.id} {...movie}/>
                 })}
             </div>
-
+            
+            {/*If the page is still loading display Loading massage and if there is an error display error*/}
             {(popularErr || bestErr || upcomingErr) && <div>{popularErr || bestErr || upcomingErr}</div>}
             {(popularLoad || bestLoad || upcomingLoad) && <div>Loading...</div>}
             

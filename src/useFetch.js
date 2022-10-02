@@ -24,6 +24,7 @@ const useFetch = (API_REQUEST) => {
     }, [API_REQUEST])
 
     const refetch = () => {
+        setLoading(true);
         fetch(API_REQUEST).then(res => {
             if(!res.ok){
                 throw Error('Could not fetch the data from that URL');
