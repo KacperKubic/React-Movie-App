@@ -20,7 +20,7 @@ const useFetch = (API_REQUEST) => {
                 setLoading(false);
                 setError(err.message);
             })
-        }, 1500)
+        }, 500)
     }, [API_REQUEST])
 
     const refetch = () => {

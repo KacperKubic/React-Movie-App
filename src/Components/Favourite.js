@@ -10,15 +10,23 @@ const Favourite = () => {
         if (movies) {
             setMovies(movies);
         }
-    }, []);
+    }, [movies]);
+
+    const clearFavourites = () => {
+        localStorage.removeItem('favouriteMovies');
+        setMovies([]);
+    }
 
     return ( 
         <div className='movieList'>
             <h1>Favourite</h1>
             <div className='movies'>
-            {movies && movies.map(movie=>{
-                return <MovieCard key={movie.id} {...movie}/>
-            })}
+                {movies && movies.map(movie=>{
+                    return <MovieCard key={movie.id} {...movie}/>
+                })}
+            </div>
+            <div className='removeButton'>
+                <button onClick={clearFavourites}>Clear favourites</button>
             </div>
         </div>
      );

@@ -122,7 +122,7 @@ header input{
     color: whitesmoke;
 }
 
-.homepage h1{
+.category h1{
     margin-left: 1rem;
     margin-bottom: 0;
     font-weight: 300;
@@ -256,11 +256,18 @@ header input{
     font-weight: 100;
 }
 
+.detailsInfo .buttons{
+    display: flex;
+    flex-direction: row;
+}
+
 .detailsInfo button{
     border-radius: 10px;
     border: 2px #373a69 solid;
-    width: 80px;
-    height: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 70px;
     background-color: #6a6dad;
     opacity: 0.95;
     margin-right: 5px;
@@ -268,8 +275,22 @@ header input{
     color: whitesmoke;
 }
 
+
 .detailsInfo button:hover{
     scale: 1.1;
+    cursor: pointer;
+}
+
+.detailsInfo .watched{
+    background-color: rgba(110, 235, 172, 0.788);
+}
+
+.detailsInfo .toWatch{
+    background-color: rgba(110, 235, 172, 0.788);
+}
+
+.detailsInfo .favourite{
+    background-color: rgba(110, 235, 172, 0.788);
 }
 
 /*Styling the watched, toWatch and favourite components*/
@@ -280,6 +301,25 @@ header input{
 
 .movieList div{
     display: flex;
+    flex-wrap: wrap;
+}
+
+.movieList .removeButton{
+    margin-left: 1rem;
+}
+
+.movieList .removeButton button{
+    border-radius: 10px;
+    border: 2px #373a69 solid;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 40px;
+    background-color: #6a6dad;
+    opacity: 0.95;
+    margin-right: 5px;
+    font-size: 15px;
+    color: whitesmoke;
 }
 
 /*Styling for mobile devices*/
@@ -303,8 +343,8 @@ header input{
     }  
 
     .detailsInfo button{
-        width: 70px;
-        height: 30px;
+        width: 90px;
+        height: 50px;
         font-size: 12px;
         color: whitesmoke;
     }
@@ -314,5 +354,37 @@ header input{
     .details{
         flex-direction: column;
         height: auto;
+    }
+}
+
+@media screen and (max-width:350px){
+    .details .detailsImg{
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .details .detailsImg img{
+        height: 350px;
+        box-shadow: 0;
+    }
+
+    .detailsInfo h1{
+       font-size: 1.5rem;
+    }
+
+    .category h1{
+        margin-left: 0;
+    }
+
+    .movieCard{
+        margin: 1rem;
+        margin-left: 0;
+        margin-right: 2rem;
+    }
+}
+
+@media screen and (max-width:295px){
+    .detailsInfo button{
+        height: 70px;
     }
 }

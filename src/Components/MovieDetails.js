@@ -16,12 +16,42 @@ const MovieDetails = () => {
     const [toWatch, setToWatch] = useState({});
     const [favourite, setFavourite] = useState({});
 
+    //State used for displaying propper buttons for adding/deleting from local storage
+    const [inWatched, setInWatched] = useState(false);
+    const [inToWatch, setInToWatch] = useState(false);
+    const [inFavourite, setInFavoutires] = useState(false);
+
     //Variables that take data from useFetch hook
     const { error: detailsErr, loading: detailsLoad, data: details, refetch } = useFetch(DETAILS_API);
     const { error: similarErr, loading: similarLoad, data: similar } = useFetch(SIMILAR_API);
 
-    //When the state changes run useEffect hook and add the data to local storage
+    //When the state changes run useEffect hook
     useEffect(() => {
+        //Function responsible for checking if the movie is already in one of three lists in local storage
+        const checkLocalStorage = async () => {
+            const movieInfo = await details;
+            if (localStorage.getItem('watchedMovies') && movieInfo && localStorage.getItem('watchedMovies').includes(movieInfo.id)){
+                setInWatched(true)
+            }else(
+                setInWatched(false)
+            )
+
+            if (localStorage.getItem('moviesToWatch') && movieInfo &&  localStorage.getItem('moviesToWatch').includes(movieInfo.id)){
+                setInToWatch(true)
+            }else if(localStorage.getItem('watchedMovies').includes(movieInfo.id)){
+                setInToWatch(true)
+            }else(
+                setInToWatch(false)
+            )
+
+            if (localStorage.getItem('favouriteMovies') && movieInfo && localStorage.getItem('favouriteMovies').includes(movieInfo.id)){
+                setInFavoutires(true);
+            }else(
+                setInFavoutires(false)
+            )
+        }
+
+        //Adding the data to local storage. If a key doesn't exist create it.
         if(Object.keys(watched).length !== 0){
             if(localStorage.getItem('watchedMovies') === null){
                 var watchedMovies = []
@@ -50,7 +80,9 @@ const MovieDetails = () => {
             localStorage.setItem('favouriteMovies', JSON.stringify(favouriteMovies));
             setFavourite({})
         }
-    }, [watched, toWatch, favourite])
+
+        checkLocalStorage();
+    }, [watched, toWatch, favourite, details])
 
     //Functions that update the state on click of one of three buttons
     const addWatched = () =>{
@@ -65,11 +97,14 @@ const MovieDetails = () => {
         setFavourite({id: details.id, title: details.title, vote_average: details.vote_average, poster_path: details.poster_path})
     }
 
+    //Function for deleting from local storage
+
     return ( 
         <div className='movieDetails'>
             {/*If the data is loading or there is an error display a message*/}
             {(detailsErr || similarErr) && <div>{detailsErr || similarErr}</div>}
             {(detailsLoad || similarLoad) && <div>Loading...</div>}
+            {/*Displaying movie details such us title, description or rating*/}
             {details &&
             <div className='details'>
                 <div className='detailsImg'>
@@ -85,16 +120,23 @@ const MovieDetails = () => {
                     <p>Genres: <span>{details.genres.map((genre)=>{
                         return genre.name + ' ' 
                     })}</span></p>
-                    <button onClick={addWatched}>Watched</button>
-                    <button onClick={addToWatch}>To watch</button>
-                    <button onClick={addFavourite}>Favourite</button>
+                    <div className='buttons'>
+                        {!inWatched && <button onClick={addWatched}>Add to watched</button>}
+                        {inWatched && <button className='watched' disabled>Already watched</button>}
+                        {!inToWatch && <button onClick={addToWatch}>Add to watch list</button>}
+                        {inToWatch && <button style={{display: "none"}}/>}
+                        {!inFavourite && <button onClick={addFavourite}>Add to favourites</button>}
+                        {inFavourite && <button className='favourite' disabled>Favourite</button>}
+
+
+                    </div>
                 </div>
             </div>
             }
             {/*Display similar movies*/}
             {similar &&
             <div className='category'>
-                <h2>Similar movies:</h2>
+                <h1>Similar movies:</h1>
                 <div className='movieRow'>
                     {similar.results.map((movie)=>{
                         id = movie.id; return <MovieCard key={movie.id} {...movie} onClick={refetch}/>

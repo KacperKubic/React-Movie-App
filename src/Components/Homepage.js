@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieCard from "./MovieCard";
 import useFetch from "../useFetch";
 
@@ -20,23 +20,32 @@ const Homepage = () => {
     const { error: bestErr, loading: bestLoad, data: best} = useFetch(BEST_API);
     const { error: upcomingErr, loading: upcomingLoad, data: upcoming} = useFetch(UPCOMING_API);
     
-    //Fetching the data from the API when form is submited
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
-        if(search) {
-            fetch(SEARCH_API + search).then((res)=> res.json()).then((data)=>{
+    //Fetching the data from the API 5 seconds after search state change
+    useEffect(()=>{
+        console.log(search)
+        const searchMovies = async () => {
+            await fetch(SEARCH_API + search).then((res) => res.json()).then((data)=>{
                 setMovies(data.results)
-            });
-            setSearch('')
+            })
         }
-    }
+
+        const timeoutId = setTimeout(() => {
+            if(search){
+                searchMovies()
+            }else(
+                setMovies([])
+            )
+        },  500)
+
+        return () => {
+            clearTimeout(timeoutId)
+        }
+    }, [SEARCH_API, search])
 
     return ( 
         <div className='homepage'>
             <header>
-                <form onSubmit={handleOnSubmit}>
                     <input type='search' placeholder='Search...' value={search} onChange={(e)=>setSearch(e.target.value)}/>
-                </form>
             </header>
             
             <div className='results'>
