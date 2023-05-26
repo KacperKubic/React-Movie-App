@@ -10,7 +10,7 @@ const Watched = () => {
         if (movies) {
             setMovies(movies);
         }
-    }, [movies]);
+    }, []);
 
     const clearWatched = () => {
         localStorage.removeItem('watchedMovies');

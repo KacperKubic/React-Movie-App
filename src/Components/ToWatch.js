@@ -10,7 +10,7 @@ const ToWatch = () => {
         if (movies) {
             setMovies(movies);
         }
-    }, [movies]);
+    }, []);
 
     const clearToWatch = () => {
         localStorage.removeItem('moviesToWatch');
@@ -22,11 +22,11 @@ const ToWatch = () => {
             <h1>Movies to watch</h1>
             <div className='movies'>
                 {movies && movies.map(movie=>{
-                    return <MovieCard key={movie.id} {...movie}/>
+                    return <MovieCard key={movie.id} {...movie} remove/>
                 })}
+            </div>
             <div className='removeButton'>
                 <button onClick={clearToWatch}>Clear watchlist</button>
-            </div>
             </div>
         </div>
      );

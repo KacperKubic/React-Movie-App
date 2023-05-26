@@ -148,8 +148,12 @@ header input{
 }
 
 .movieCard h4{
+    width: auto;
     font-weight: 600;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .movieCard img{
@@ -299,9 +303,9 @@ header input{
     margin-left: 1rem;
 }
 
-.movieList div{
+.movieList .movies{
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .movieList .removeButton{

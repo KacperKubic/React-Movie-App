@@ -10,7 +10,7 @@ const Favourite = () => {
         if (movies) {
             setMovies(movies);
         }
-    }, [movies]);
+    }, []);
 
     const clearFavourites = () => {
         localStorage.removeItem('favouriteMovies');

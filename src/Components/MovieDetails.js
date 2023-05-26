@@ -38,7 +38,7 @@ const MovieDetails = () => {
 
             if (localStorage.getItem('moviesToWatch') && movieInfo &&  localStorage.getItem('moviesToWatch').includes(movieInfo.id)){
                 setInToWatch(true)
-            }else if(localStorage.getItem('watchedMovies').includes(movieInfo.id)){
+            }else if(localStorage.getItem('watchedMovies') && movieInfo && localStorage.getItem('watchedMovies').includes(movieInfo.id)){
                 setInToWatch(true)
             }else(
                 setInToWatch(false)
